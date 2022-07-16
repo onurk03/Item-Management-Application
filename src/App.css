@@ -1,3 +1,4 @@
+/* Default React Styles */
 .App {
   text-align: center;
 }
@@ -23,11 +24,6 @@
   color: white;
 }
 
-.itemsTitle {
-  text-decoration: underline;
-  font-size: calc(10px + 2vmin);
-}
-
 .App-link {
   color: #61dafb;
 }
@@ -39,4 +35,48 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+/*  Items Table Styles */
+.itemsTitle {
+  text-decoration: underline;
+  font-size: calc(10px + 2vmin);
+}
+
+table {
+  border: 2px solid black;
+  width: 95%;
+  margin: 30px;
+}
+
+td {
+  text-align: center;
+}
+
+/* New Item Form Styles */
+
+.popup-content {
+  border: 2px solid black;
+  border-radius: 15px;
+  width: 600px;
+  height: 600px;
+  background-color: white;
+}
+.popup-content form {
+  display: flex;
+  flex-direction: column;
+  margin: 0 10%;
+}
+.popup-content input, select {
+  margin: 20px 10px;
+}
+.popup-content select {
+  width: 20%;
+}
+.popup-overlay {
+  background-color: rgba(0, 0, 0, 0.5);
+}
+.newItemBox h3 {
+  text-align: center;
+  font-size: 25px;
 }
