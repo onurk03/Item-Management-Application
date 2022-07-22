@@ -40,7 +40,7 @@
 /*  Items Table Styles */
 .itemsTitle {
   text-decoration: underline;
-  font-size: calc(10px + 2vmin);
+  font-size: calc(10px + 3vmin);
 }
 
 table {
@@ -51,6 +51,38 @@ table {
 
 td {
   text-align: center;
+}
+
+/*    Button Styles    */
+.refreshItems, .addItem {
+  border: black 2px outset;
+  border-radius: 5px;
+  margin-right: 20px;
+  padding: 3px;
+  cursor: pointer;
+  font-family: "Gill Sans MT", sans-serif;
+  font-size: calc(10px + 1vmin);
+}
+.refreshItems:hover, .addItem:hover {
+  border: black 1px outset;
+}
+
+.refreshItems:active, .addItem:active {
+  border: black 2px inset;
+}
+
+.editItem {
+  border: black 2px outset;
+  font-family: "Gill Sans MT", sans-serif;
+  cursor: pointer;
+}
+
+.editItem:hover {
+  border: black 1px inset;
+}
+
+.editItem:active {
+  border: black 2px outset;
 }
 
 /* New Item Form Styles */
@@ -78,5 +110,8 @@ td {
 }
 .newItemBox h3 {
   text-align: center;
-  font-size: 25px;
+  font-size: 30px;
+  font-family: "Gill Sans MT", sans-serif;
 }
+
+

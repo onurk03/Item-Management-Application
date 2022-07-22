@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import Popup from "reactjs-popup";
 import {db} from "./Firebase";
 import { collection, getDocs } from "firebase/firestore";
@@ -56,6 +56,7 @@ export default function Items() {
                         <td>{item.data.quantity}</td>
                         <td>${item.data.price}</td>
                         <td>{item.data.category}</td>
+                        <td><button className="editItem">Edit</button></td>
                     </tr>
                 ))}
                 </tbody>
@@ -103,8 +104,6 @@ const itemConverter = {
  * @constructor
  */
 function AddItem() {
-    // manages "categories" array state
-    const [allCategories, setCategories] = useState([]);
     // manages item addition states
     const initialValues = {
         name: "Item",
@@ -113,6 +112,8 @@ function AddItem() {
         category: "shoes",
     }
     const [newValues, setValues] = useState(initialValues);
+    // manages "categories" array state
+    const [allCategories, setCategories] = useState([]);
 
     useEffect(() => {
         getCategories();
@@ -149,6 +150,7 @@ function AddItem() {
      * @returns {Promise<void>}
      */
     async function addNewItem(event) {
+        event.preventDefault();
         const ref = doc(db, 'items', newValues.name).withConverter(itemConverter);
         const newItem = new Item(
             newValues.name,
@@ -160,6 +162,7 @@ function AddItem() {
         await setDoc(ref, newItem).catch(error => {
             console.log(error.message);
         });
+        window.location.reload(false);
     }
 
     // async function addCategory() {
@@ -215,11 +218,6 @@ function AddItem() {
                                 ))
                             ))}
                         </select>
-                        {/*<label className="newCategory">*/}
-                        {/*    New Category:*/}
-                        {/*    <input id="newCategoryName" ref={newCategory}/>*/}
-                        {/*    <button onClick={addCategory}> Add </button>*/}
-                        {/*</label>*/}
                     </label>
                     <input type="submit"/>
                 </form>
