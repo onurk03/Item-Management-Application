@@ -54,7 +54,7 @@ td {
 }
 
 /*    Button Styles    */
-.refreshItems, .addItem {
+.refreshItems, .addItem, .changeItemButton {
   border: black 2px outset;
   border-radius: 5px;
   margin-right: 20px;
@@ -63,11 +63,11 @@ td {
   font-family: "Gill Sans MT", sans-serif;
   font-size: calc(10px + 1vmin);
 }
-.refreshItems:hover, .addItem:hover {
+.refreshItems:hover, .addItem:hover, .changeItemButton:hover {
   border: black 1px outset;
 }
 
-.refreshItems:active, .addItem:active {
+.refreshItems:active, .addItem:active, .changeItemButton:active {
   border: black 2px inset;
 }
 
@@ -84,6 +84,7 @@ td {
 .editItem:active {
   border: black 2px outset;
 }
+
 
 /* New Item Form Styles */
 
