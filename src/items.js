@@ -30,6 +30,7 @@ export default function Items() {
     const changedQuantity = React.createRef();
     const changedPrice = React.createRef();
     const changedCategory = React.createRef();
+    const createdDate = React.createRef();
 
     /**
      * Executes the getItems() and getCategories() function before other things after each render.
@@ -107,7 +108,7 @@ export default function Items() {
             changedQuantity.current.value,
             changedPrice.current.value,
             changedCategory.current.value,
-            new Date().toString(),
+            createdDate.current.innerText,
             new Date().toString())
         await setDoc(ref, updatedItem).catch(error => {
             console.log(error.message);
@@ -225,9 +226,8 @@ export default function Items() {
                                             ))}
                                         </select>
                                     </label>
-                                    Date Created: {item.data.created_at}
-                                    <br/><br/>
-                                    Last Modified: {item.data.modified_at}
+                                    Date Created: <p ref={createdDate}> {item.data.created_at}</p>
+                                    Last Modified:<p> {item.data.modified_at} </p>
                                     <input className="changeItemButton" value={"Change"} type="submit"/>
                                 </form>
                             </div>
