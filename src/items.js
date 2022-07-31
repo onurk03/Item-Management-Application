@@ -5,7 +5,7 @@ import { collection, getDocs } from "firebase/firestore";
 import { doc, setDoc } from "firebase/firestore";
 
 /**
- * Returns a list of items from the database
+ * Renders a functional item list from a database
  * @returns {JSX.Element}
  * @constructor
  */
@@ -41,7 +41,7 @@ export default function Items() {
     }, []);
 
     /**
-     * Handles multiple inputs while adding a new item.
+     * Handles multiple inputs while adding a new item to the database.
      * @param e
      */
     const handleNewItemInput = (e) => {
@@ -53,7 +53,7 @@ export default function Items() {
     }
 
     /**
-     * Queries from the 'items' collection in the Firebase database.
+     * Queries items from the 'items' collection in the Firebase database.
      */
     function getItems() {
         const itemsCollectionRef = collection(db, 'items');
@@ -67,7 +67,7 @@ export default function Items() {
     }
 
     /**
-     * Queries from the 'categories' collection in the Firebase database.
+     * Queries categoreis from the 'categories' collection in the Firebase database.
      */
     function getCategories() {
         const itemsCollectionRef = collection(db, 'allcategories');
@@ -81,7 +81,7 @@ export default function Items() {
     }
 
     /**
-     * Adds a new Item to the database with the given input on the new item form
+     * Adds a new Item to the database with the given input from a submitted new item form.
      * @returns {Promise<void>}
      */
     async function addNewItem(event) {
@@ -100,6 +100,12 @@ export default function Items() {
         window.location.reload(false);
     }
 
+    /**
+     * Changes the properties of an item that already exists in the database when a form is
+     * submitted
+     * @param event
+     * @returns {Promise<void>}
+     */
     async function changeItemInfo(event) {
         event.preventDefault();
         const ref = doc(db, 'items', changedName.current.value).withConverter(itemConverter);
