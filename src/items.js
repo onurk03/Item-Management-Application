@@ -179,7 +179,7 @@ export default function Items() {
     }
 
     return (
-        <div>
+        <div className="itemManager">
             <h2 className="itemsTitle"> Items </h2>
             <button className="defaultButtons" onClick={() => getItems()}>Refresh Items</button>
             <Popup

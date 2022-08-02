@@ -46,20 +46,21 @@
 table {
   border: 2px solid black;
   width: 95%;
-  margin: 30px;
+  margin: auto;
 }
 
 td, tr {
   text-align: center;
   list-style-type: none;
   padding-bottom: 10px;
+  font-size: calc(3px + 2vmin);
 }
 
 /*    Button Styles    */
 .defaultButtons {
   border: black 2px outset;
   border-radius: 5px;
-  margin-right: 20px;
+  margin: 0 10px 30px;
   padding: 3px;
   cursor: pointer;
   font-family: "Gill Sans MT", sans-serif;
