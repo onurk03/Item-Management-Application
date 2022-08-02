@@ -49,12 +49,14 @@ table {
   margin: 30px;
 }
 
-td {
+td, tr {
   text-align: center;
+  list-style-type: none;
+  padding-bottom: 10px;
 }
 
 /*    Button Styles    */
-.refreshItems, .addItem, .changeItemButton {
+.defaultButtons {
   border: black 2px outset;
   border-radius: 5px;
   margin-right: 20px;
@@ -63,28 +65,46 @@ td {
   font-family: "Gill Sans MT", sans-serif;
   font-size: calc(10px + 1vmin);
 }
-.refreshItems:hover, .addItem:hover, .changeItemButton:hover {
+.defaultButtons:hover {
   border: black 1px outset;
 }
 
-.refreshItems:active, .addItem:active, .changeItemButton:active {
+.defaultButtons:active {
   border: black 2px inset;
 }
 
-.editItem {
+.submitButtons {
+  border: black 2px outset;
+  border-radius: 5px;
+  padding: 3px;
+  cursor: pointer;
+  font-family: "Gill Sans MT", sans-serif;
+  font-size: calc(10px + 1vmin);
+}
+
+.submitButtons:hover {
+  border: black 1px outset;
+}
+
+.submitButtons:active {
+  border: black 2px inset;
+}
+
+.sideButtons {
   border: black 2px outset;
   font-family: "Gill Sans MT", sans-serif;
   cursor: pointer;
+  float: right;
+  margin-right: 10px;
 }
 
-.editItem:hover {
+.sideButtons:hover {
   border: black 1px inset;
 }
 
-.editItem:active {
+.sideButtons:active {
   border: black 2px outset;
 }
-
 
 /* New Item Form Styles */
 
@@ -109,10 +129,34 @@ td {
 .popup-overlay {
   background-color: rgba(0, 0, 0, 0.5);
 }
-.newItemBox h3 {
+.popupBox h3, .editItemBox h3 {
   text-align: center;
-  font-size: 30px;
+  font-size: 35px;
   font-family: "Gill Sans MT", sans-serif;
+  font-weight: normal;
+  margin: 20px;
 }
 
+/* Categories List Styles */
+.categoriesBox {
+  border: 2px black solid;
+  min-height: 25em;
+  margin: 20px;
+  max-height: 25em;
+  overflow-y: auto;
+  text-align: center;
+}
 
+.categoriesList li {
+  list-style-type: none;
+  margin-right: 25px;
+  padding-bottom: 10px;
+}
+
+.newCategoryInfo {
+  text-align: center;
+}
+
+.removeCategory {
+  float: right;
+}

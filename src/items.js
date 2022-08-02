@@ -1,8 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import Popup from "reactjs-popup";
 import {db} from "./Firebase";
-import { collection, getDocs } from "firebase/firestore";
-import { doc, setDoc } from "firebase/firestore";
+import { collection, doc, setDoc, getDocs, updateDoc, deleteDoc, arrayUnion } from "firebase/firestore";
 
 /**
  * Renders a functional item list from a database
@@ -18,12 +17,15 @@ export default function Items() {
         category: "shoes",
     }
     // states defined for newly added item values
-    const [newValues, setValues] = useState(defaultNewValues);
+    const [newItemValues, setItemValues] = useState(defaultNewValues);
+
     // an "items" state is set as an array, and the setItems() method can be used to update that
     // array
     const [items, setItems] = useState([]);
+
     // manages "categories" array state
     const [allCategories, setCategories] = useState([]);
+    const [newCategory, setNewCategory] = useState("category");
 
     // Input values stored when changing item's info.
     const changedName = React.createRef();
@@ -33,11 +35,11 @@ export default function Items() {
     const createdDate = React.createRef();
 
     /**
-     * Executes the getItems() and getCategories() function before other things after each render.
+     * Executes the getItems() function before other things after each render.
      */
     useEffect(() => {
         getItems()
-        getCategories();
+        getCategories()
     }, []);
 
     /**
@@ -46,10 +48,14 @@ export default function Items() {
      */
     const handleNewItemInput = (e) => {
         const {name, value} = e.target;
-        setValues({
-            ...newValues,
+        setItemValues({
+            ...newItemValues,
             [name]: value,
         });
+    }
+
+    const handleNewCategory = (e) => {
+        setNewCategory(e.target.value);
     }
 
     /**
@@ -63,11 +69,11 @@ export default function Items() {
                 id: doc.id,
             }))
             setItems(item);
-        }).catch(error => console.log(error.message))
+        }).catch(error => console.log(error.message));
     }
 
     /**
-     * Queries categoreis from the 'categories' collection in the Firebase database.
+     * Queries categories from the 'categories' collection in the Firebase database.
      */
     function getCategories() {
         const itemsCollectionRef = collection(db, 'allcategories');
@@ -77,7 +83,7 @@ export default function Items() {
                 id: doc.id,
             }))
             setCategories(category);
-        }).catch(error => console.log(error.message))
+        }).catch(error => console.log(error.message));
     }
 
     /**
@@ -86,18 +92,34 @@ export default function Items() {
      */
     async function addNewItem(event) {
         event.preventDefault();
-        const ref = doc(db, 'items', newValues.name).withConverter(itemConverter);
+        const ref = doc(db, 'items', newItemValues.name).withConverter(itemConverter);
         const newItem = new Item(
-            newValues.name,
-            newValues.quantity,
-            newValues.price,
-            newValues.category,
+            newItemValues.name,
+            newItemValues.quantity,
+            newItemValues.price,
+            newItemValues.category,
             new Date().toString(),
             new Date().toString())
         await setDoc(ref, newItem).catch(error => {
             console.log(error.message);
         });
         window.location.reload(false);
+    }
+
+    /**
+     * Removes an Item from the database and the user's list.
+     * @param event
+     * @returns {Promise<void>}
+     */
+    async function removeItem(event) {
+        event.preventDefault();
+        const ref = doc(db, 'items', event.target.value);
+        if(window.confirm("Are you sure you want to delete this item?")) {
+            await deleteDoc(ref).catch(error => {
+                console.log(error.message);
+            });
+            window.location.reload(false);
+        }
     }
 
     /**
@@ -122,21 +144,88 @@ export default function Items() {
         window.location.reload(false);
     }
 
+    /**
+     * Adds a new Category to the database with the given input from a submitted new category from.
+     * @param event
+     * @returns {Promise<void>}
+     */
+    async function addCategory(event) {
+        event.preventDefault();
+        const categoryDocRef = doc(db, 'allcategories', 'Categories');
+        await updateDoc(categoryDocRef, {
+            categories: arrayUnion(...[newCategory])
+        }).then(response => {
+            console.log("updated");
+        }).catch(error => console.log(error.message));
+        getCategories();
+    }
+
+    /**
+     * Removes a Category from the available categories and from the database
+     * @param event
+     * @returns {Promise<void>}
+     */
+    async function removeCategory(event) {
+        event.preventDefault();
+        const categoryDocRef = doc(db, 'allcategories', 'Categories')
+        const removeIndex = allCategories[0].data.categories.indexOf(event.target.value);
+        allCategories[0].data.categories.splice(removeIndex,1);
+        await setDoc(categoryDocRef, {
+            categories: arrayUnion(...allCategories[0].data.categories)
+        }).then(response => {
+            console.log("updated");
+        }).catch(error => console.log(error.message));
+        getCategories();
+    }
+
     return (
         <div>
             <h2 className="itemsTitle"> Items </h2>
-            <button className="refreshItems" onClick={() => getItems()}>Refresh Items</button>
+            <button className="defaultButtons" onClick={() => getItems()}>Refresh Items</button>
             <Popup
-                trigger= {<button className="addItem"> Add Item </button>}
+                trigger= {<button className="defaultButtons"> Manage Categories </button>}
+                modal
+                nested
+                onOpen={() => getCategories()}
+            >
+                <div className="popupBox">
+                    <div className="categoriesBox">
+                    <h3>Available Categories</h3>
+                        <ul className="categoriesList" >
+                            {allCategories.map(category => (category.data.categories.map(categoryName => (
+                                <li key={categoryName}>{categoryName}
+                                    <button onClick={removeCategory}
+                                            value={categoryName}
+                                            className="sideButtons">
+                                        Remove
+                                    </button>
+                                </li>
+                            )
+                        )))}
+                        </ul>
+                    </div>
+                </div>
+                <form onSubmit={addCategory}>
+                    <label className="newCategoryInfo">
+                        New Category Name: <input
+                        type="text"
+                        value={newCategory}
+                        onChange={handleNewCategory}
+                    />
+                    </label>
+                    <input className="submitButtons" value="Add Category" type="submit"/>
+                </form>
+            </Popup>
+            <Popup
+                trigger= {<button className="defaultButtons"> Add Item </button>}
                 modal
                 nested>
-                <div className="newItemBox">
+                <div className="popupBox">
                     <h3> New Item Info </h3>
                     <form onSubmit={addNewItem}>
                         <label>
-                            Item Name:
-                            <input type="text"
-                                   value={newValues.name}
+                            Item Name:<input type="text"
+                                   value={newItemValues.name}
                                    onChange={handleNewItemInput}
                                    name="name"
                             />
@@ -144,7 +233,7 @@ export default function Items() {
                         <label>
                             Item Quantity:
                             <input type="number"
-                                   value={newValues.quantity}
+                                   value={newItemValues.quantity}
                                    onChange={handleNewItemInput}
                                    name="quantity"
                             />
@@ -152,14 +241,14 @@ export default function Items() {
                         <label>
                             Item Price:
                             <input type="number"
-                                   value={newValues.price}
+                                   value={newItemValues.price}
                                    onChange={handleNewItemInput}
                                    name="price"
                             />
                         </label>
                         <label>
                             Item Category:
-                            <select value={newValues.category}
+                            <select value={newItemValues.category}
                                     onChange={handleNewItemInput}
                                     name="category"
                             >
@@ -170,7 +259,7 @@ export default function Items() {
                                 ))}
                             </select>
                         </label>
-                        <input type="submit"/>
+                        <input className="submitButtons" type="submit"/>
                     </form>
                 </div>
             </Popup>
@@ -191,11 +280,12 @@ export default function Items() {
                         <td>${item.data.price}</td>
                         <td>{item.data.category}</td>
                         <td>
+                            <button onClick={removeItem} value={item.data.name} className="sideButtons"> Remove </button>
                             <Popup
-                            trigger= {<button className="editItem"> Edit </button>}
+                            trigger= {<button className="sideButtons"> Edit </button>}
                             modal
                             nested>
-                            <div className="newItemBox">
+                            <div className="editItemBox">
                                 <h3> Item Info </h3>
                                 <form onSubmit={changeItemInfo}>
                                     <label>
@@ -234,7 +324,7 @@ export default function Items() {
                                     </label>
                                     Date Created: <p ref={createdDate}> {item.data.created_at}</p>
                                     Last Modified:<p> {item.data.modified_at} </p>
-                                    <input className="changeItemButton" value={"Change"} type="submit"/>
+                                    <input className="submitButtons" value={"Change"} type="submit"/>
                                 </form>
                             </div>
                         </Popup>
@@ -279,12 +369,3 @@ const itemConverter = {
             , data.modified_at);
     }
 }
-
-// async function addCategory() {
-//     const categoryDocRef = doc(db, 'allcategories', 'categories');
-//     await updateDoc(categoryDocRef, {
-//         categories: arrayUnion(newCategory.current.value)
-//     }).then(response => {
-//         console.log("updated");
-//     }).catch(error => console.log(error.message));
-// }
