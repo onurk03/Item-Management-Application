@@ -53,7 +53,7 @@ td, tr {
   text-align: center;
   list-style-type: none;
   padding-bottom: 10px;
-  font-size: calc(3px + 2vmin);
+  font-size: calc(5px + 1vmin);
 }
 
 /*    Button Styles    */
@@ -94,6 +94,7 @@ td, tr {
 .sideButtons {
   border: black 2px outset;
   font-family: "Gill Sans MT", sans-serif;
+  font-size: calc(3px + 1vmin);
   cursor: pointer;
   float: right;
   margin-right: 10px;
@@ -112,7 +113,7 @@ td, tr {
 .popup-content {
   border: 2px solid black;
   border-radius: 15px;
-  width: 600px;
+  width: 500px;
   height: 600px;
   background-color: white;
 }
@@ -141,9 +142,7 @@ td, tr {
 /* Categories List Styles */
 .categoriesBox {
   border: 2px black solid;
-  min-height: 25em;
   margin: 20px;
-  max-height: 25em;
   overflow-y: auto;
   text-align: center;
 }
