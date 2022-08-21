@@ -1,5 +1,5 @@
 import './App.css';
-import Items from './items.js';
+import Items from './components/items.js';
 import React from "react";
 
 function App() {
