@@ -1,5 +1,5 @@
 import './App.css';
-import Items from './components/items.js';
+import MainPage from './components/mainPage.js';
 import React from "react";
 
 function App() {
@@ -9,7 +9,7 @@ function App() {
         <h1>Item Manager</h1>
       </header>
       <main>
-          <Items />
+          <MainPage />
       </main>
     </div>
   );

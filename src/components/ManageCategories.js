@@ -1,8 +1,13 @@
 import {arrayUnion, collection, doc, getDocs, setDoc, updateDoc} from "firebase/firestore";
-import {db} from "../Firebase";
+import {db} from "../services/Firebase";
 import Popup from "reactjs-popup";
 import React, {useState} from "react";
 
+/**
+ * Renders the pop-up form for managing all categories available in the database.
+ * @returns {JSX.Element}
+ * @constructor
+ */
 export default function ManageCategories() {
     const [newCategory, setNewCategory] = useState("category");
     // manages "categories" array state

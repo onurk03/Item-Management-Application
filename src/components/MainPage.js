@@ -1,16 +1,16 @@
 import React, {useEffect, useState} from 'react';
 import ItemList from "./itemList";
 import ManageCategories from "./ManageCategories";
-import AddItem from "./addItem";
+import ItemAdd from "./addItem";
 import {collection, getDocs} from "firebase/firestore";
-import {db} from "../Firebase";
+import {db} from "../services/Firebase";
 
 /**
- * Renders a functional item list from a database
+ * Renders the main page that holds all components
  * @returns {JSX.Element}
  * @constructor
  */
-export default function Items() {
+export default function MainPage() {
     // manages "categories" array state
     const [allCategories, setCategories] = useState([]);
 
@@ -36,7 +36,7 @@ export default function Items() {
         <div className="itemManager">
             <h2 className="itemsTitle"> Items </h2>
             <ManageCategories/>
-            <AddItem allCategories = {allCategories}/>
+            <ItemAdd allCategories = {allCategories}/>
             <ItemList allCategories = {allCategories}/>
         </div>
     )

@@ -1,9 +1,15 @@
 import Popup from "reactjs-popup";
 import React from "react";
 import {doc, setDoc} from "firebase/firestore";
-import {db} from "../Firebase";
+import {db} from "../services/Firebase";
 import {Item, itemConverter} from "./Item";
 
+/**
+ * Renders a pop-up form for editing an item and seeings its info.
+ * @param props
+ * @returns {JSX.Element}
+ * @constructor
+ */
 export default function ItemEdit(props) {
     // Input values stored when changing item's info.
     const changedName = React.createRef();

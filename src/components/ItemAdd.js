@@ -1,10 +1,16 @@
 import React, {useState} from "react";
 import {doc, setDoc} from "firebase/firestore";
-import {db} from "../Firebase";
+import {db} from "../services/Firebase";
 import {Item, itemConverter} from "./Item";
 import Popup from "reactjs-popup";
 
-export default function AddItem(props) {
+/**
+ * Renders the pop-up form for adding a new item.
+ * @param props
+ * @returns {JSX.Element}
+ * @constructor
+ */
+export default function ItemAdd(props) {
     // Initial values for a new item being added
     const defaultNewValues = {
         name: "Item",

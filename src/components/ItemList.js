@@ -1,8 +1,14 @@
 import React, {useEffect, useState} from "react";
 import ItemEdit from "./ItemEdit";
 import {collection, deleteDoc, doc, getDocs} from "firebase/firestore";
-import {db} from "../Firebase";
+import {db} from "../services/Firebase";
 
+/**
+ * Renders a list of all items stored in the database.
+ * @param props
+ * @returns {JSX.Element}
+ * @constructor
+ */
 export default function ItemList(props) {
     // an "items" state is set as an array, and the setItems() method can be used to update that
     // array
